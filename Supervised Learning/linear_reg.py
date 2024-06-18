@@ -7,13 +7,16 @@ from typing import List
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 class LinearModels:
-    def linear_regression(self, X, Y: List):
+    def linear_regression(self, X, Y):
         try:
             n = len(Y)
             # -------------multivariet regression-------------
             if np.array(X).shape[-1] > 1:
                 try:
-                    Y = np.array(Y)
+                    try:
+                        Y = Y.to_numpy()
+                    except:
+                        Y = np.array(Y)
                     X_transpose = X.to_numpy().transpose()
                     X_trans_X = np.array(X_transpose @ X.to_numpy())
                     X_trans_Y = X_transpose @ Y
@@ -78,16 +81,19 @@ class LinearModels:
 
 
 if __name__ == '__main__':
-    X = pd.DataFrame(data=[1, 2, 3, 4, 5, 6, 7])
+    # X = pd.DataFrame(data=[1, 2, 3, 4, 5, 6, 7])
 
-    # X = pd.DataFrame(data={
-    #     'a':[1, 2, 3, 4, 5, 6, 7],
-    #     'b':[8, 9, 10, 11, 12, 13, 14],
-    #     'c':[15, 16, 17, 18, 19, 20, 21],
-    #     'd':[22, 23, 24, 25, 26,27, 28]
-    #     })
+    X = pd.DataFrame(data={
+        'a':[1, 2, 3, 4, 5, 6, 7],
+        'b':[8, 9, 10, 11, 12, 13, 14],
+        'c':[15, 16, 17, 18, 19, 20, 21],
+        'd':[22, 23, 24, 25, 26,27, 28]
+        })
 
     Y = [1.5, 3.8, 6.7, 9.0, 11.2, 13.6, 16]
+
+    # Y = X.iloc[:, -1]
+    # X = X.iloc[:, :-1]
 
     linear_reg = LinearModels()
     variables = linear_reg.linear_regression(X, Y)
