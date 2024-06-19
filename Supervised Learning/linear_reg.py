@@ -6,7 +6,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %I:%M:%S %p')
 
 class LinearRegression:
-    def linear_regression(self, X, Y, X_test, Y_test):
+    def linear_regression(self, X, Y, X_test=None, Y_test=None):
         try:
             n = len(Y)
             # -------------multivariet regression-------------
@@ -32,7 +32,7 @@ class LinearRegression:
                     MSE = np.mean(residuals**2)
                     logging.info(f"Mean Squared Error -> {MSE}")
                     
-                    return y_pred, B, MSE
+                    return y_pred, B, MSE 
                 except Exception as e:
                     logging.error('Exception occured at', e)
 
@@ -72,11 +72,12 @@ class LinearRegression:
                     
                 MSE = [np.mean(err**2) for err in error]
                 logging.info(f"Mean Squared Error: {MSE}")
-                
+
                 return slope, intercept, y_pred, MSE
 
         except Exception as e:
             logging.error('An exception occured at: ', e)
+
 
 
 if __name__ == '__main__':
@@ -91,7 +92,7 @@ if __name__ == '__main__':
 
     Y = [1.5, 3.8, 6.7, 9.0, 11.2, 13.6, 16]
 
-    x_test = [[2, 9, 16, 23]]
+    x_test = pd.DataFrame(data=[2, 9, 16, 23])
     y_test = [1.4, 8, 12, 26]
 
     linear_reg = LinearRegression()
