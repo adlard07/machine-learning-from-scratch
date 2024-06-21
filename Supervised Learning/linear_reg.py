@@ -6,7 +6,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %I:%M:%S %p')
 
 class LinearRegression:
-    def linear_regression(self, X, Y, X_test=None, Y_test=None):
+    def linear_regression(self, X, Y):
         try:
             n = len(Y)
             # -------------multivariet regression-------------
@@ -32,7 +32,7 @@ class LinearRegression:
                     MSE = np.mean(residuals**2)
                     logging.info(f"Mean Squared Error -> {MSE}")
                     
-                    return y_pred, B, MSE 
+                    return y_pred, B, B[0], MSE 
                 except Exception as e:
                     logging.error('Exception occured at', e)
 
@@ -56,15 +56,15 @@ class LinearRegression:
                 except Exception as e:
                     logging.error(f'The lengths of {X} and {Y} do not match')
                     
-                slope = ((n * sum_of_XY) - (sum_of_X*sum_of_Y)) / ((n * sum_of_X_sqr) - (sum_of_X * sum_of_X))
-                logging.info(f"Slope -> {slope}")
+                B = ((n * sum_of_XY) - (sum_of_X*sum_of_Y)) / ((n * sum_of_X_sqr) - (sum_of_X * sum_of_X))
+                logging.info(f"Slope -> {B}")
 
-                intercept = ((sum_of_Y - (slope * sum_of_X)) / (n))
+                intercept = ((sum_of_Y - (B * sum_of_X)) / (n))
                 logging.info(f"Intercept(coefficient) -> {intercept}")
 
                 y_pred, error = [], []
                 for x in X:
-                    pred = intercept + (slope * x)
+                    pred = intercept + (B * x)
                     err = pred - x
                     y_pred.append(pred)
                     error.append(err)
@@ -73,7 +73,7 @@ class LinearRegression:
                 MSE = [np.mean(err**2) for err in error]
                 logging.info(f"Mean Squared Error: {MSE}")
 
-                return slope, intercept, y_pred, MSE
+                return y_pred, B, intercept, MSE 
 
         except Exception as e:
             logging.error('An exception occured at: ', e)

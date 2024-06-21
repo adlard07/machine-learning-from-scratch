@@ -2,27 +2,16 @@ import pandas as pd
 import numpy as np
 import logging
 import math
+from linear_reg import LinearRegression
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%d/%m/%y %I:%M:%S%p ')
 
-
-class ClassificationModels:
-    def sigmoid(self, probablities):
-        maximum = max(probablities)
-        return maximum
-        
-    
+class LogisticRegression:
     def logistic_reg(self, X_train, Y_train, X_test, Y_tests):
-        # B(slope) -> inverse((X transpose) * X) * (X transpose) * Y
-        X_transpose = X_train.to_numpy().transpose()
-        X_trans_X = X_transpose @ X.to_numpy()
-        X_trans_X_inv = np.linalg.pinv(X_trans_X)
-        X_trans_Y = X_transpose @ Y
-        B = X_trans_X_inv @ X_trans_Y
+        # B(slope) -> inverse((X transpose) * X) * (X transpose) * Y --- Dependency on linear regression
+        _, B, _, _ = LinearRegression().linear_regression(X_train, Y_train)
         logging.info(f"B(slope) -> {B}")
-
-        # print(X_train.to_numpy()[0])
 
         # linear model y = mx + b
         z = [sum(X_train.to_numpy()[i] * B) for i in range(len(X_train.to_numpy()))]
@@ -36,7 +25,7 @@ class ClassificationModels:
         probablities = [(1 / (1 + e)) for e in e_zinv]
         logging.info(f"Output probablities -> {probablities}")
 
-        # return probablities
+        return probablities
 
 
 if __name__ == "__main__":
@@ -57,5 +46,5 @@ if __name__ == "__main__":
     
     Y_test= [0]
 
-    classification_models = ClassificationModels()
+    classification_models = LogisticRegression()
     variables = classification_models.logistic_reg(X, Y, X_test, Y_test)
